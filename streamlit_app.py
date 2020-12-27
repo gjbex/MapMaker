@@ -204,14 +204,14 @@ if __name__ == '__main__':
         with data_column1:
             column_name = st.selectbox('Data column',
                                        [column for column in data.columns
-                                        if column not in ('nis_code',)])
+                                        if column not in ('niscode',)])
         with data_column2:
             data_type = DATA_TYPES[st.selectbox('Data type', list(DATA_TYPES.keys()))]
         with data_column3:
             color_scheme = st.selectbox('Color scheme', COLOR_SCHEMES)
         tooltip_names = st.multiselect('Tooltip columns',
                                        [column for column in data.columns
-                                        if column not in ('nis_code',)])
+                                        if column not in ('niscode',)])
         plot = create_plot(topo_data=topo_municipalities, data=data,
                            column_name=column_name, data_type=data_type,
                            tooltip_columns=tooltip_names, scheme=color_scheme)
