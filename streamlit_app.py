@@ -143,15 +143,15 @@ def validate_data(data):
 
 
 def create_plot(topo_data, data, column_name, data_type, tooltip_columns=None,
-                stroke='lightgrey', strokeWidth=0.5, legend_title=None,
+                stroke='darkgrey', strokeWidth=0.9, legend_title=None,
                 scheme='reds'):
     lookup_columns = [column_name]
     if tooltip_columns is not None:
         lookup_columns.extend(tooltip_columns)
     if legend_title is None:
         legend_title = column_name
-    return alt.Chart(topo_data)\
-            .mark_geoshape(stroke=stroke, strokeWidth=strokeWidth)\
+    base = alt.Chart(topo_data) \
+            .mark_geoshape() \
             .encode(
                 color=alt.Color(f'{column_name}:{data_type}',
                                 legend=alt.Legend(title=legend_title), 
@@ -160,7 +160,15 @@ def create_plot(topo_data, data, column_name, data_type, tooltip_columns=None,
             ).transform_lookup(
                 lookup='properties.CODE_INS',
                 from_=alt.LookupData(data, 'niscode', lookup_columns)
+            ).properties(
+                width=600,
+                height=450,
             )
+    return alt.Chart(topo_data).mark_geoshape(stroke=stroke, strokeWidth=strokeWidth) \
+            .encode(
+                color=alt.value('white'),
+                opacity=alt.value(0.1),
+            ) + base
 
 
 def create_quantitative_plot(topo_data, data, column_name,
