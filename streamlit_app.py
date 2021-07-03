@@ -100,6 +100,17 @@ COLOR_SCHEMES = (
     'tableau20',
 )
 
+MISSING_COLORS = [
+    'white',
+    'grey',
+    'black',
+    'lightgreen',
+    'green',
+    'lightblue',
+    'blue',
+    'lightred',
+    'red',
+]
 
 def create_topo_data(url, feature):
     return alt.topo_feature(url, feature)
@@ -144,7 +155,7 @@ def validate_data(data):
 
 def create_plot(topo_data, data, column_name, data_type, tooltip_columns=None,
                 stroke='darkgrey', strokeWidth=0.9, legend_title=None,
-                scheme='reds'):
+                scheme='reds', missing_color='white'):
     lookup_columns = [column_name]
     if tooltip_columns is not None:
         lookup_columns.extend(tooltip_columns)
@@ -166,23 +177,23 @@ def create_plot(topo_data, data, column_name, data_type, tooltip_columns=None,
             )
     return alt.Chart(topo_data).mark_geoshape(stroke=stroke, strokeWidth=strokeWidth) \
             .encode(
-                color=alt.value('white'),
-                opacity=alt.value(0.1),
+                color=alt.value(missing_color),
+                opacity=alt.value(0.9),
             ) + base
 
 
 def create_quantitative_plot(topo_data, data, column_name,
                              stroke='lightgrey', strokeWidth=0.5,
-                             legend_title=None, scheme='reds'):
+                             legend_title=None, scheme='reds', missing_color='white'):
     return create_plot(topo_data, data, column_name, 'Q',
-                       stroke, strokeWidth, legend_title, scheme)
+                       stroke, strokeWidth, legend_title, scheme, missing_color)
 
 
 def create_nominal_plot(topo_data, data, column_name,
                         stroke='lightgrey', strokeWidth=0.5,
-                        legend_title=None, scheme='reds'):
+                        legend_title=None, scheme='reds', missing_color='white'):
     return create_plot(topo_data, data, column_name, 'N',
-                       stroke, strokeWidth, legend_title, scheme)
+                       stroke, strokeWidth, legend_title, scheme, missing_color)
 
 BE_GEO_URL = 'https://gist.githubusercontent.com/jandot/ba7eff2e15a38c6f809ba5e8bd8b6977/raw/eb49ce8dd2604e558e10e15d9a3806f114744e80/belgium_municipalities_topojson.json'
 BE_MUNICIPALITIES_FEATURE = 'BE_municipalities'
@@ -217,10 +228,12 @@ if __name__ == '__main__':
             data_type = DATA_TYPES[st.selectbox('Data type', list(DATA_TYPES.keys()))]
         with data_column3:
             color_scheme = st.selectbox('Color scheme', COLOR_SCHEMES)
+            missing_color = st.selectbox('Missing color', MISSING_COLORS)
         tooltip_names = st.multiselect('Tooltip columns',
                                        [column for column in data.columns
                                         if column not in ('niscode',)])
         plot = create_plot(topo_data=topo_municipalities, data=data,
                            column_name=column_name, data_type=data_type,
-                           tooltip_columns=tooltip_names, scheme=color_scheme)
+                           tooltip_columns=tooltip_names, scheme=color_scheme,
+                           missing_color=missing_color)
         st.write(plot)
