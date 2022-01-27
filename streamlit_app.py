@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import altair as alt
-import altair_saver
 import io
 import numpy as np
 import pandas as pd

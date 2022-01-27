@@ -1,5 +1,4 @@
 altair=4.1.0
-altair_saver=0.5.0
 numpy=1.21.2
 openpyxl=3.0.9
 pandas=1.2.5
