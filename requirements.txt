@@ -1,5 +1,5 @@
-altair=4.1.0
-numpy=1.21.2
-openpyxl=3.0.9
-pandas=1.2.5
-streamlit=1.0.0
+altair
+numpy
+openpyxl
+pandas
+streamlit
